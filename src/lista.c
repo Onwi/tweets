@@ -51,8 +51,8 @@ lista *insereFim(lista *ptLista, int linha){
 }
 
 // consulta se um id ja esta na lista
-// retorna true ou false 
-bool *consulta(lista *ptLista, int linha){
+// retorna true se o id estiver, ou false caso não 
+bool consultaLista(lista *ptLista, int linha){
     lista *ptAux;
 
     if(ptLista == NULL){

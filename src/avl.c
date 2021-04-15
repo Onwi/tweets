@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "avl.h"
 
 // calcula o fator de balanceamento de uma abp
@@ -9,18 +10,29 @@ int fator_balanceamento(PtPalavra *a)
  return (Altura(a->esq) - Altura(a->dir));
 }
 
-PtPalavra* cria_arvore(void){
-  return NULL;
+PtPalavra* cria_arvore(){
+    return NULL;
 }
 
-PtPalavra* InsereRaiz(PtPalavra *a, char *s){
-  if (a == NULL){
-    a = (PtPalavra*) malloc(sizeof(PtPalavra));
-    strcpy(a->palavra, s);
-    a->esq = NULL;
-    a->dir = NULL;
+/*  consulta AVL por recursão
+    retorna true se encontrar uma palavra na avl, falso ao contrario
+    recebe por referencia uma variavel comp que é incrementada cada vez
+    que uma comparação é feita
+*/
+bool consultaAVL(PtPalavra *a, char *s, int *comp){
+  if (a==NULL){
+      comp++; 
+      return false;
   }
-    return(a);
+  else{
+      comp++;
+      if (strcmp(a->palavra, s) == 0) return true;
+      else
+        if (strcmp(a->palavra, s) > 0)
+            return consultaABP(a->esq, s);
+        else
+            return consultaABP(a->dir, s);
+  }
 }
 
 int Altura(PtPalavra *a)
@@ -103,8 +115,12 @@ PtPalavra *rotacao_dupla_esquerda(PtPalavra *p)
     return p;
 }
 
+
 // Insere nodo em uma arvore AVL
-PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok)
+// rot é passado como referencia para contar o número de rotações ocorridas
+// note que rot não é incrementada nessa função especifica, mas passada como referencia
+// dentro desta função para a função onde é realizada as rotações
+PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot)
 {
     if (a == NULL) // se a arvore estiver vazia insere como raiz
     {
@@ -113,11 +129,14 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok)
         a->esq = NULL;
         a->dir = NULL;
         a->FB = 0;
+
+        // inserir nas listas aqui
+
         *ok = 1;
     } // senao, insere um nodo na avl conforme a ordem lexicografica da palavra s
     else if (strcmp(s, a->palavra) < 0) 
     {
-        a->esq = InsereAVL(a->esq, s, ok);
+        a->esq = InsereAVL(a->esq, s, ok, rot);
         if (*ok)
         {
             switch (a->FB)
@@ -130,14 +149,14 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok)
                 a->FB = 1;
                 break;
             case 1:
-                a = Caso1(a, ok);
+                a = Caso1(a, ok, rot);
                 break;
             }
         }
     }
     else
     {
-        a->dir = InsereAVL(a->dir, s, ok);
+        a->dir = InsereAVL(a->dir, s, ok, rot);
         if (*ok)
         {
             switch (a->FB)
@@ -150,7 +169,7 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok)
                 a->FB = -1;
                 break;
             case -1:
-                a = Caso2(a, ok);
+                a = Caso2(a, ok, rot);
                 break;
             }
         }
@@ -158,27 +177,36 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok)
     return a;
 }
 
-PtPalavra *Caso1(PtPalavra *a, int *ok)
+// rot é passado como referencia para contar o número de rotações ocorridas
+PtPalavra *Caso1(PtPalavra *a, int *ok, int *rot)
 {
     PtPalavra *z;
     z = a->esq;
-    if (z->FB == 1)
+    if (z->FB == 1){
+        rot++; // +1 em caso de rotação simples
         a = rotacao_direita(a);
-    else
+    }
+    else{
+        rot += 2; // +2 em caso de rotação dupla
         a = rotacao_dupla_direita(a);
+    }
     a->FB = 0;
     *ok = 0;
     return a;
 }
 
-PtPalavra *Caso2(PtPalavra *a, int *ok)
+PtPalavra *Caso2(PtPalavra *a, int *ok, int *rot)
 {
     PtPalavra *z;
     z = a->dir;
-    if (z->FB == -1)
+    if (z->FB == -1){
+        rot++; // +1 em caso de rotação simples
         a = rotacao_esquerda(a);
-    else
+    }
+    else{
+        rot += 2; // +2 em caso de rotação dupla
         a = rotacao_dupla_esquerda(a);
+    }
     a->FB = 0;
     *ok = 0;
     return a;

@@ -1,4 +1,5 @@
 #include "lista.h"
+#include <stdbool.h>
 
 // definicao do tipo palavra (PtPalavra)
 // tipo usado na avl
@@ -25,13 +26,13 @@ PtPalavra *rotacao_dupla_direita(PtPalavra *p);
 PtPalavra *rotacao_dupla_esquerda(PtPalavra *p);
 
 // insere um nodo na avl
-PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok);
+PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot);
 
 // caso rotacoes a direita
-PtPalavra *Caso1(PtPalavra *a, int *ok);
+PtPalavra *Caso1(PtPalavra *a, int *ok, int *rot);
 
 // caso rotacoes a esquerda
-PtPalavra *Caso2(PtPalavra *a, int *ok);
+PtPalavra *Caso2(PtPalavra *a, int *ok, int *rot);
 
 // calcula a altura de um nodoS
 int Altura(PtPalavra *a);
@@ -41,4 +42,6 @@ int fator_balanceamento(PtPalavra *a);
 
 PtPalavra *cria_arvore(void);
 
-PtPalavra *InsereRaiz(PtPalavra *a, char *s);
+// consulta AVL por recursão
+// retorna true se encontrar uma palavra na avl, falso ao contrario
+bool consultaAVL(PtPalavra *a, char *s, int *comp);
