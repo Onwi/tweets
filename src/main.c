@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
 
     char separador[] = {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"};
     PtPalavra *arv = cria_arvore(); // cria arvore
-    arv->ocorrencias = inicializa();
+    PtPalavra *aux_lista = cria_arvore(); // variavel auxilixar para inserção das ocorrencias na lista
     char *palavra, linha[1000];
 
     if(argc != 4){ // testa numero de parametros, se for diferente de 4 encerra
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]){
     int rotAVL = 0; // variavel para contar o número de rotações na avl
     int nodos = 0; // conta o número de nodos inseridos
 
+    // INDEXAÇÃO
     // le o arquivo de entrada e coloca as palavras na avl
     while(fgets(linha, 5000, entrada)){
         id_char = strtok(linha, ";"); // pega o id
@@ -48,25 +49,23 @@ int main(int argc, char *argv[]){
 
         palavra = strtok(NULL, separador); // primeira palavra depois do ;
 
-        /*
-            a inserção dos ids está errada, no modo atual atualiza apenas a lista da
-            raiz da árvore.
-            a inserção dos ids precisa ocorrer dentro da funçao insereAVL, i guess
-        */
-
         while(palavra != NULL){
             if(!consultaAVL(arv, palavra, &compAVL)){ // se a palavra não estiver na estrura
                 arv = InsereAVL(arv, palavra, &ok, &rotAVL); // insere ela e o id na avl
                 nodos++;
-                arv->ocorrencias = insereInicio(arv->ocorrencias, id_num);
+                aux_lista = consultaAVL(arv, palavra, &compAVL);
+                aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }else{// senão, insere apenas o id, caso este não esteja na lista de ocorrencias
-                if(!consultaLista(arv->ocorrencias, id_num)){
-                    arv->ocorrencias = insereInicio(arv->ocorrencias, id_num);
-                }
+                aux_lista = consultaAVL(arv, palavra, &compAVL);
+                aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }
             palavra = strtok(NULL, separador); // pega a proxima palavra do tweet
         }
     }
+
+    int altArvore = Altura(arv);
+
+    // CONSULTAS
 
     // fecha os arquivos
 

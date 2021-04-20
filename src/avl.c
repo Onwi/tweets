@@ -15,18 +15,18 @@ PtPalavra* cria_arvore(){
 }
 
 /*  consulta AVL por recursão
-    retorna true se encontrar uma palavra na avl, falso ao contrario
+    retorna o nodo da palavra encontrada na avl, null se não encontrar
     recebe por referencia uma variavel comp que é incrementada cada vez
     que uma comparação é feita
 */
-bool consultaAVL(PtPalavra *a, char *s, int *comp){
+PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp){
   if (a==NULL){
       comp++; 
-      return false;
+      return NULL;
   }
   else{
       comp++;
-      if (strcmp(a->palavra, s) == 0) return true;
+      if (strcmp(a->palavra, s) == 0) return a;
       else
         if (strcmp(a->palavra, s) > 0)
             return consultaABP(a->esq, s);
@@ -129,8 +129,7 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot)
         a->esq = NULL;
         a->dir = NULL;
         a->FB = 0;
-
-        // inserir nas listas aqui
+        a->ocorrencias = inicializa();
 
         *ok = 1;
     } // senao, insere um nodo na avl conforme a ordem lexicografica da palavra s
