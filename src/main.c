@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
     }
 
     int id_char, id_num, ok = 0;
-    int compAVL = 0; // variavel para contar o número de comparações na avl
+    int compInd = 0; // variavel para contar o número de comparações na avl
     int rotAVL = 0; // variavel para contar o número de rotações na avl
     int nodos = 0; // conta o número de nodos inseridos
 
@@ -50,13 +50,13 @@ int main(int argc, char *argv[]){
         palavra = strtok(NULL, separador); // primeira palavra depois do ;
 
         while(palavra != NULL){
-            if(!consultaAVL(arv, palavra, &compAVL)){ // se a palavra não estiver na estrura
+            if(!consultaAVL(arv, palavra,  compInd)){ // se a palavra não estiver na estrura
                 arv = InsereAVL(arv, palavra, &ok, &rotAVL); // insere ela e o id na avl
                 nodos++;
-                aux_lista = consultaAVL(arv, palavra, &compAVL);
+                aux_lista = consultaAVL(arv, palavra,  compInd);
                 aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }else{// senão, insere apenas o id, caso este não esteja na lista de ocorrencias
-                aux_lista = consultaAVL(arv, palavra, &compAVL);
+                aux_lista = consultaAVL(arv, palavra,  compInd);
                 aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }
             palavra = strtok(NULL, separador); // pega a proxima palavra do tweet
@@ -64,10 +64,39 @@ int main(int argc, char *argv[]){
     }
 
     int altArvore = Altura(arv);
+    lista *ptAux;
 
-    // CONSULTAS
+    // CONSULTAS E SAIDAS
+    int compCon = 0;
+    // consulta e imprime cada palavra da avl no arquivo de saida
+    while(fgets(linha, 100, consulta)){
+        arv = consultaAVL(arv, linha,  compCon);
+        if(arv){ // se a palavra for encontrada, imprime-a no arquivo juntamento com
+                 // sua lista de occorencias
+            fprintf(saida , "consulta: %s   Palavra encontrada nos tweets ", arv->palavra);
+            for(ptAux = arv->ocorrencias; ptAux != NULL; ptAux = ptAux->prox){
+                fprintf(saida,"%d", ptAux->linha);
+                if(ptAux->prox){
+                    fprintf(saida, ", ");
+                }
+            }
+        }
+    }
+    
+    // imprime as estatisticas da indexação
+    fprintf(saida, "********** Estatisticas da Indexacao **************");
+    fprintf(saida, "nodos = %d", nodos);
+    fprintf(saida, "comparacoes = %d", compInd);
+    fprintf(saida, "rotacoes = %d", rotAVL);
+    fprintf(saida, "altura da arvore = %d", altArvore);
+    // estatisticas das consultas
+    fprintf(saida, "********** Estatisticas das Consultas **************");
+    fprintf(saida, "comparacoes = %d", compCon);
 
     // fecha os arquivos
-
+    fclose(entrada);
+    fclose(consulta);
+    fclose(saida);
+    
     return 0;
 }

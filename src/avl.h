@@ -44,4 +44,4 @@ PtPalavra *cria_arvore(void);
 
 // consulta AVL por recursão
 // retorna true se encontrar uma palavra na avl, falso ao contrario
-bool consultaAVL(PtPalavra *a, char *s, int *comp);
+PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp);

@@ -8,18 +8,6 @@ lista *inicializa(){
     return NULL;
 }
 
-// exibe todos os elementos da lista
-void imprime(lista *ptLista){
-    lista *ptAux;
-    
-    if(ptLista == NULL){
-        return;
-    }else{
-        for(ptAux = ptLista; ptAux != NULL; ptAux = ptAux->prox){
-            printf("%d", ptAux->linha);
-        }
-    }
-}
 
 // insere um nodo no inicio da lista
 lista *insereInicio(lista *ptLista, int linha){
