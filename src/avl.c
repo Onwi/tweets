@@ -29,9 +29,9 @@ PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp){
       if (strcmp(a->palavra, s) == 0) return a;
       else
         if (strcmp(a->palavra, s) > 0)
-            return consultaABP(a->esq, s);
+            return consultaAVL(a->esq, s, comp);
         else
-            return consultaABP(a->dir, s);
+            return consultaAVL(a->dir, s, comp);
   }
 }
 

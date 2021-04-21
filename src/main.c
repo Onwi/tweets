@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "avl.h"
-#include "lista.h"
 
 int main(int argc, char *argv[]){ 
     FILE *entrada;
@@ -36,7 +35,8 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    int id_char, id_num, ok = 0;
+    int id_num, ok = 0;
+    char *id_char;
     int compInd = 0; // variavel para contar o número de comparações na avl
     int rotAVL = 0; // variavel para contar o número de rotações na avl
     int nodos = 0; // conta o número de nodos inseridos
@@ -50,13 +50,13 @@ int main(int argc, char *argv[]){
         palavra = strtok(NULL, separador); // primeira palavra depois do ;
 
         while(palavra != NULL){
-            if(!consultaAVL(arv, palavra,  compInd)){ // se a palavra não estiver na estrura
+            if(!consultaAVL(arv, palavra, &compInd)){ // se a palavra não estiver na estrura
                 arv = InsereAVL(arv, palavra, &ok, &rotAVL); // insere ela e o id na avl
                 nodos++;
-                aux_lista = consultaAVL(arv, palavra,  compInd);
+                aux_lista = consultaAVL(arv, palavra, &compInd);
                 aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }else{// senão, insere apenas o id, caso este não esteja na lista de ocorrencias
-                aux_lista = consultaAVL(arv, palavra,  compInd);
+                aux_lista = consultaAVL(arv, palavra, &compInd);
                 aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
             }
             palavra = strtok(NULL, separador); // pega a proxima palavra do tweet
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
     int compCon = 0;
     // consulta e imprime cada palavra da avl no arquivo de saida
     while(fgets(linha, 100, consulta)){
-        arv = consultaAVL(arv, linha,  compCon);
+        arv = consultaAVL(arv, linha,  &compCon);
         if(arv){ // se a palavra for encontrada, imprime-a no arquivo juntamento com
                  // sua lista de occorencias
             fprintf(saida , "consulta: %s   Palavra encontrada nos tweets ", arv->palavra);
@@ -97,6 +97,6 @@ int main(int argc, char *argv[]){
     fclose(entrada);
     fclose(consulta);
     fclose(saida);
-    
+
     return 0;
 }
