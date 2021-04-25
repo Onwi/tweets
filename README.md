@@ -1,2 +1,2 @@
 # tweets
-analise de desempenho de um simulador de buscador de palavras-chave usando AVL
+Comparação de analise de desempenho de dois simuladores de buscador de palavras-chave, um usando AVL e o outro ABP
