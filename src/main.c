@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
     char separador[] = {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"};
     PtPalavra *arv = cria_arvore(); // cria arvore
     PtPalavra *aux_lista = cria_arvore(); // variavel auxilixar para inserção das ocorrencias na lista
-    char *palavra, linha[1000];
+    char *palavra, palavraSaida[100], linha[1000];
 
     if(argc != 4){ // testa numero de parametros, se for diferente de 4 encerra
         printf("Numero incorreto de parametros!\n");
@@ -54,10 +54,12 @@ int main(int argc, char *argv[]){
                 arv = InsereAVL(arv, palavra, &ok, &rotAVL); // insere ela e o id na avl
                 nodos++;
                 aux_lista = consultaAVL(arv, palavra, &compInd);
-                aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
+                aux_lista->ocorrencias = insereFim(aux_lista->ocorrencias, id_num);
             }else{// senão, insere apenas o id, caso este não esteja na lista de ocorrencias
                 aux_lista = consultaAVL(arv, palavra, &compInd);
-                aux_lista->ocorrencias = insereInicio(aux_lista->ocorrencias, id_num);
+                if(!consultaLista(aux_lista->ocorrencias, id_num)){
+                    aux_lista->ocorrencias = insereFim(aux_lista->ocorrencias, id_num);
+                }
             }
             palavra = strtok(NULL, separador); // pega a proxima palavra do tweet
         }
@@ -68,30 +70,38 @@ int main(int argc, char *argv[]){
 
     // CONSULTAS E SAIDAS
     int compCon = 0;
+    PtPalavra *arvCons = cria_arvore();
     // consulta e imprime cada palavra da avl no arquivo de saida
     while(fgets(linha, 100, consulta)){
-        arv = consultaAVL(arv, linha,  &compCon);
-        if(arv){ // se a palavra for encontrada, imprime-a no arquivo juntamento com
-                 // sua lista de occorencias
-            fprintf(saida , "consulta: %s   Palavra encontrada nos tweets ", arv->palavra);
-            for(ptAux = arv->ocorrencias; ptAux != NULL; ptAux = ptAux->prox){
+        // remove o \n da linha, que causa problema na consulta
+        linha[strcspn(linha, "\n")] = 0;
+        //fprintf(saida, linha);
+        
+        arvCons = consultaAVL(arv, linha,  &compCon);
+        if(arvCons != NULL){ // se a palavra for encontrada, imprime-a no arquivo juntamento com
+                         // sua lista de occorencias
+            fprintf(saida , "consulta %s  -  Palavra encontrada nos tweets ", arvCons->palavra);
+            for(ptAux = arvCons->ocorrencias; ptAux != NULL; ptAux = ptAux->prox){
                 fprintf(saida,"%d", ptAux->linha);
                 if(ptAux->prox){
                     fprintf(saida, ", ");
                 }
             }
+        }else{
+            fprintf(saida, "%s - Palavra não encontrada", linha);
         }
+        fprintf(saida, "\n");
     }
     
     // imprime as estatisticas da indexação
-    fprintf(saida, "********** Estatisticas da Indexacao **************");
-    fprintf(saida, "nodos = %d", nodos);
-    fprintf(saida, "comparacoes = %d", compInd);
-    fprintf(saida, "rotacoes = %d", rotAVL);
-    fprintf(saida, "altura da arvore = %d", altArvore);
+    fprintf(saida, "\n********** Estatisticas da Indexação **************");
+    fprintf(saida, "\nnodos = %d", nodos);
+    fprintf(saida, "\ncomparações = %d", compInd);
+    fprintf(saida, "\nrotações = %d", rotAVL);
+    fprintf(saida, "\naltura da árvore = %d", altArvore);
     // estatisticas das consultas
-    fprintf(saida, "********** Estatisticas das Consultas **************");
-    fprintf(saida, "comparacoes = %d", compCon);
+    fprintf(saida, "\n\n********** Estatísticas das Consultas **************");
+    fprintf(saida, "\ncomparações = %d", compCon);
 
     // fecha os arquivos
     fclose(entrada);

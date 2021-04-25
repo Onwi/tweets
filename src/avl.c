@@ -21,11 +21,11 @@ PtPalavra* cria_arvore(){
 */
 PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp){
   if (a==NULL){
-      comp++; 
+      (*comp)++; 
       return NULL;
   }
   else{
-      comp++;
+      (*comp)++;
       if (strcmp(a->palavra, s) == 0) return a;
       else
         if (strcmp(a->palavra, s) > 0)
@@ -182,11 +182,11 @@ PtPalavra *Caso1(PtPalavra *a, int *ok, int *rot)
     PtPalavra *z;
     z = a->esq;
     if (z->FB == 1){
-        rot++; // +1 em caso de rotação simples
+        (*rot)++; // +1 em caso de rotação simples
         a = rotacao_direita(a);
     }
     else{
-        rot += 2; // +2 em caso de rotação dupla
+        (*rot) += 2; // +2 em caso de rotação dupla
         a = rotacao_dupla_direita(a);
     }
     a->FB = 0;
@@ -199,11 +199,11 @@ PtPalavra *Caso2(PtPalavra *a, int *ok, int *rot)
     PtPalavra *z;
     z = a->dir;
     if (z->FB == -1){
-        rot++; // +1 em caso de rotação simples
+        (*rot)++; // +1 em caso de rotação simples
         a = rotacao_esquerda(a);
     }
     else{
-        rot += 2; // +2 em caso de rotação dupla
+        (*rot) += 2; // +2 em caso de rotação dupla
         a = rotacao_dupla_esquerda(a);
     }
     a->FB = 0;
