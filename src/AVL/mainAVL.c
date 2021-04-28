@@ -53,6 +53,7 @@ int main(int argc, char *argv[]){
             if(!consultaAVL(arv, palavra, &compInd)){ // se a palavra não estiver na estrura
                 arv = InsereAVL(arv, palavra, &ok, &rotAVL); // insere ela e o id na avl
                 nodos++;
+                printf("indexação: nodo %d\n", nodos);
                 aux_lista = consultaAVL(arv, palavra, &compInd);
                 aux_lista->ocorrencias = insereFim(aux_lista->ocorrencias, id_num);
             }else{// senão, insere apenas o id, caso este não esteja na lista de ocorrencias
