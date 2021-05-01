@@ -11,6 +11,8 @@ typedef struct TNodoA PtPalavra;
 // cria uma árvore vazia
 PtPalavra* cria_arvore(void);
 
+int Altura(PtPalavra *a);
+
 // insesre nodo na arvore
 PtPalavra* InsereArvore(PtPalavra *a, char *palavra, int* comp);
 

@@ -7,6 +7,23 @@ PtPalavra* cria_arvore(void){
   return NULL;
 }
 
+// retorna a altura de uma ABP
+int Altura(PtPalavra *a)
+{
+    int Alt_Esq, Alt_Dir;
+    if (a == NULL)
+        return 0;
+    else
+    {
+        Alt_Esq = Altura(a->esq);
+        Alt_Dir = Altura(a->dir);
+        if (Alt_Esq > Alt_Dir)
+            return (1 + Alt_Esq);
+        else
+            return (1 + Alt_Dir);
+    }
+}
+
 
 // nas duas funções que seguem, comp é uma variavel passada por referencia
 // para contar o número de comparções realizadas na inserção e consulta a ABP

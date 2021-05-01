@@ -3,6 +3,7 @@
 #include <string.h>
 #include "abp.h"
 
+
 int main(int argc, char *argv[]){
     FILE *entrada;
     FILE *consulta;
@@ -35,9 +36,9 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    int id_num, ok = 0;
+    int id_num;
     char *id_char;
-    int consABP = 0; // número de consultas realidas
+    int compABP = 0; // número de comparações realizadas
 
     // INDEXAÇÃO
     while(fgets(linha, 5000, entrada)){
@@ -48,12 +49,12 @@ int main(int argc, char *argv[]){
 
         while(palavra != NULL){
             // se a palavra não estiver na árvore, insere ela e o id na avl
-            if(!consultaABP(arv, palavra, &consABP)){
-                arv = InsereArvore(arv, palavra, &consABP);
-                aux_lista = consultaABP(arv, palavra, &consABP);
+            if(!consultaABP(arv, palavra, &compABP)){
+                arv = InsereArvore(arv, palavra, &compABP);
+                aux_lista = consultaABP(arv, palavra, &compABP);
                 aux_lista->ocorrencias = insereFim(aux_lista->ocorrencias, id_num);
             }else{ // senão insere só o id, caso esse não esteja na lista de ocorrencias
-                aux_lista = consultaABP(arv, palavra, &consABP);
+                aux_lista = consultaABP(arv, palavra, &compABP);
                 if(!consultaLista(aux_lista->ocorrencias, id_num)){
                     aux_lista->ocorrencias = insereFim(aux_lista->ocorrencias, id_num);
                 }
@@ -63,7 +64,45 @@ int main(int argc, char *argv[]){
 
     }
 
+    // CONSULTAS E SAIDAS
+    int compSaida = 0;
+    lista *ptAux;
+    PtPalavra *arvCons = cria_arvore();
 
+    while (fgets(linha, 100, consulta)){
+        // remove \n da palavra
+        linha[strcspn(linha, "\n")] = 0;
+        //consulta se a palavra esta na ABP
+        // se sim, imprime ela no arquivo de saida
+        arvCons = consultaABP(arv, linha, &compSaida);
+        if(arvCons){
+            fprintf(saida , "consulta %s  -  Palavra encontrada nos tweets ", arvCons->palavra);
+            for(ptAux = arvCons->ocorrencias; ptAux != NULL; ptAux = ptAux->prox){
+                fprintf(saida, "%d", ptAux->linha);
+                if(ptAux->prox){
+                    fprintf(saida, ", ");
+                }
+            }
+        }else{
+            fprintf(saida, "%s - Palavra não encontrada", linha);
+        }
+        fprintf(saida, "\n");
+    }
+
+    // imprime as estatisticas da indexação
+    fprintf(saida, "\n********** Estatisticas da Indexação **************");
+    fprintf(saida, "\nnodos = %d", contaNodos(arv));
+    fprintf(saida, "\ncomparações = %d", compABP);
+    fprintf(saida, "\naltura da árvore = %d", Altura(arv));
+    // estatisticas das consultas
+    fprintf(saida, "\n\n********** Estatísticas das Consultas **************");
+    fprintf(saida, "\ncomparações = %d", compSaida);
+
+    // fecha os arquivos
+    fclose(entrada);
+    fclose(consulta);
+    fclose(saida);
+    
 
     return 0;
 }
