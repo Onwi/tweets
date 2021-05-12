@@ -10,8 +10,8 @@ consulta nada  -  Palavra encontrada nos tweets 20, 48, 52, 64, 147, 173, 268, 2
 
 ********** Estatisticas da Indexação **************
 nodos = 15543
-comparações = 8724484
+comparações = 5895378
 altura da árvore = 34
 
 ********** Estatísticas das Consultas **************
-comparações = 282
+comparações = 185

@@ -53,16 +53,15 @@ PtPalavra* InsereArvore(PtPalavra *a, char *palavra, int *comp){
 // consulta ABP por recursão
 PtPalavra* consultaABP(PtPalavra *a, char *palavra, int *comp) {
   if (a==NULL){
-        (*comp)++;
         return NULL;
   }
   else{
     if (strcmp(palavra, a->palavra) == 0){ 
-        (*comp)+=2;
+        (*comp)++;
         return a;
     }
     else{
-      (*comp)+=3;
+      (*comp)+=2;
       if (strcmp(a->palavra, palavra) > 0){
         return consultaABP(a->esq, palavra, comp);
       }

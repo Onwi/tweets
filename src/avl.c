@@ -21,16 +21,15 @@ PtPalavra* cria_arvore(){
 */
 PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp){
   if (a==NULL){
-      (*comp)++; 
       return NULL;
   }
   else{
       if (strcmp(a->palavra, s) == 0){
-          (*comp)+=2; 
+          (*comp)++; 
           return a;
       }
       else{
-        (*comp)+=3;
+        (*comp)+=2;
         if (strcmp(a->palavra, s) > 0){
             return consultaAVL(a->esq, s, comp);
         }
@@ -128,13 +127,13 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot, int *comp)
 {
     if (a == NULL) // se a arvore estiver vazia insere como raiz
     {
+        (*comp)++;
         a = (PtPalavra *)malloc(sizeof(PtPalavra));
         strcpy(a->palavra, s);
         a->esq = NULL;
         a->dir = NULL;
         a->FB = 0;
         a->ocorrencias = inicializa();
-        (*comp)++;
         *ok = 1;
     } // senao, insere um nodo na avl conforme a ordem lexicografica da palavra s
     else if (strcmp(s, a->palavra) < 0) 
