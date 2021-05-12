@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
     int id_num;
     char *id_char;
     int compABP = 0; // número de comparações realizadas
-
+    
     // INDEXAÇÃO
     while(fgets(linha, 5000, entrada)){
         id_char = strtok(linha, ";");

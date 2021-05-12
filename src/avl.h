@@ -26,7 +26,7 @@ PtPalavra *rotacao_dupla_direita(PtPalavra *p);
 PtPalavra *rotacao_dupla_esquerda(PtPalavra *p);
 
 // insere um nodo na avl
-PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot);
+PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot, int *comp);
 
 // caso rotacoes a direita
 PtPalavra *Caso1(PtPalavra *a, int *ok, int *rot);

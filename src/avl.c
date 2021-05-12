@@ -25,13 +25,17 @@ PtPalavra *consultaAVL(PtPalavra *a, char *s, int *comp){
       return NULL;
   }
   else{
-      (*comp)++;
-      if (strcmp(a->palavra, s) == 0) return a;
-      else
-        if (strcmp(a->palavra, s) > 0)
+      if (strcmp(a->palavra, s) == 0){
+          (*comp)+=2; 
+          return a;
+      }
+      else{
+        (*comp)+=3;
+        if (strcmp(a->palavra, s) > 0){
             return consultaAVL(a->esq, s, comp);
-        else
-            return consultaAVL(a->dir, s, comp);
+        }
+        else return consultaAVL(a->dir, s, comp);    
+      }
   }
 }
 
@@ -120,7 +124,7 @@ PtPalavra *rotacao_dupla_esquerda(PtPalavra *p)
 // rot é passado como referencia para contar o número de rotações ocorridas
 // note que rot não é incrementada nessa função especifica, mas passada como referencia
 // dentro desta função para a função onde é realizada as rotações
-PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot)
+PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot, int *comp)
 {
     if (a == NULL) // se a arvore estiver vazia insere como raiz
     {
@@ -130,12 +134,13 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot)
         a->dir = NULL;
         a->FB = 0;
         a->ocorrencias = inicializa();
-
+        (*comp)++;
         *ok = 1;
     } // senao, insere um nodo na avl conforme a ordem lexicografica da palavra s
     else if (strcmp(s, a->palavra) < 0) 
-    {
-        a->esq = InsereAVL(a->esq, s, ok, rot);
+    {   
+        (*comp)+=2;
+        a->esq = InsereAVL(a->esq, s, ok, rot, comp);
         if (*ok)
         {
             switch (a->FB)
@@ -155,7 +160,8 @@ PtPalavra *InsereAVL(PtPalavra *a, char *s, int *ok, int *rot)
     }
     else
     {
-        a->dir = InsereAVL(a->dir, s, ok, rot);
+        (*comp)+=2;
+        a->dir = InsereAVL(a->dir, s, ok, rot, comp);
         if (*ok)
         {
             switch (a->FB)

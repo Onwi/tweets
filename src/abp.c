@@ -40,12 +40,13 @@ PtPalavra* InsereArvore(PtPalavra *a, char *palavra, int *comp){
     a->ocorrencias = inicializa();
   }
   else if (strcmp(palavra, a->palavra) < 0 ){
-      (*comp)++;
-      a->esq = InsereArvore(a->esq, palavra, comp);
+        (*comp)+=2;
+        a->esq = InsereArvore(a->esq, palavra, comp);
   }
-       else
-        a->dir = InsereArvore(a->dir, palavra, comp);
-
+       else{
+         (*comp)+=2;
+          a->dir = InsereArvore(a->dir, palavra, comp);
+       }
   return a;
 }
 
@@ -55,18 +56,19 @@ PtPalavra* consultaABP(PtPalavra *a, char *palavra, int *comp) {
         (*comp)++;
         return NULL;
   }
-  else
+  else{
     if (strcmp(palavra, a->palavra) == 0){ 
-        (*comp)++;
+        (*comp)+=2;
         return a;
     }
-    else
-      if (strcmp(palavra, a->palavra) < 0){
-        (*comp)++;
+    else{
+      (*comp)+=3;
+      if (strcmp(a->palavra, palavra) > 0){
         return consultaABP(a->esq, palavra, comp);
       }
-      else
-        return consultaABP(a->dir, palavra, comp);
+      else return consultaABP(a->dir, palavra, comp);
+    }
+  }
 }
 
 int contaNodos(PtPalavra *a){
