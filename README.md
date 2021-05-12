@@ -4,7 +4,7 @@ Análise de desempenho de um simulador de buscador de palavras-chave implementad
 
 A análise do desempenho é feita através do número de comparações realizadas durante as fases de indexação e consulta das palavras nas duas estruturas.
 
-Durante a fase de indexação as palavras são lidas do arquivo de entrada (`<entrada>`) e colocadas na estrutura conforme sua ordem lexicográfica, e as estatísticas das comparações são computadas. Também durante esta fase é armazenado uma lista de ocorrências de id’s em cada nodo da árvore, esses id’s representam o número dos tweets em que cada palavra ocorre ao menos uma vez.
+Durante a fase de indexação as palavras são lidas do arquivo de entrada (`<entrada>`) e colocadas na estrutura conforme sua ordem lexicográfica - ou seja, uma P palavra estará na subárvore esquerda de uma palavra Q se ela aparecer antes de P na ordem lexicográfica (função em C: strcmp()) - e as estatísticas das comparações são computadas. Também durante esta fase é armazenado uma lista de ocorrências de id’s em cada nodo da árvore, esses id’s representam o número dos tweets em que cada palavra ocorre ao menos uma vez.
   
 Durante a fase de consultas, lê-se do arquivo de consulta (`<consulta>`) as palavras a serem buscadas na estrutura, e se forem encontradas, imprime-as juntamente com seus id’s de ocorrências no arquivo de saída (`<saida>`).
 
