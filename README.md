@@ -8,10 +8,10 @@ Durante a fase de indexação as palavras são lidas do arquivo de entrada (`<en
   
 Durante a fase de consultas, lê-se do arquivo de consulta (`<consulta>`) as palavras a serem buscadas na estrutura, e se forem encontradas, imprime-as juntamente com seus id’s de ocorrências no arquivo de saída (`<saida>`).
 
-compilar o programa para AVL:
+compilar o programa para ABP:
 `gcc src/mainABP.c src/ABP.c src/lista.c -o 'tweetsABP'`
 
-e para ABP:
+e para AVL:
 `gcc src/mainAVL.c src/avl.c src/lista.c -o 'tweetsAVL'`
 
 Para depois de compilado chamar o programa a partir da linha de comando usa-se:
